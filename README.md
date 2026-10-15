@@ -99,10 +99,10 @@ Import `handler` from `benchmark-honesty/api`, or start the Node server with `np
 
 ```bash
 node scripts/gen-tasks.mjs --seed 20261015 --split public
-node scripts/gen-tasks.mjs --seed <private-seed> --split hidden
+node scripts/gen-tasks.mjs --seed "${PRIVATE_SEED}" --split hidden
 ```
 
-The hidden command writes an ignored `data/tasks.hidden.jsonl`. Keep its seed and file private. [data/PROVENANCE.md](data/PROVENANCE.md) records the source, licence, cutoff, refresh cadence, and retrieval commands.
+Set `PRIVATE_SEED` outside the repository. The hidden command writes an ignored `data/tasks.hidden.jsonl`; keep its seed and file private. [data/PROVENANCE.md](data/PROVENANCE.md) records the source, licence, cutoff, refresh cadence, and retrieval commands.
 
 ## Limits
 
