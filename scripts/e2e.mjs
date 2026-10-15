@@ -15,6 +15,22 @@ const report = JSON.parse(cli.stdout);
 assert.equal(report.rows.length, 60);
 assert.ok(report.rows.some((row) => row.score === 1));
 assert.ok(report.rows.some((row) => row.score === 0));
+const reportPath = `/tmp/benchmark-honesty-${process.pid}.json`;
+const cardPath = `/tmp/benchmark-honesty-${process.pid}.svg`;
+await writeFile(reportPath, cli.stdout);
+const cliChecks = {
+  list: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "list", "--json"])).stdout).tasks.length,
+  show: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "show", "public-001", "--json"])).stdout).task.id,
+  score: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "score", reportPath, "--json"])).stdout).rows.length,
+  provenance: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "provenance", "--json"])).stdout).provenance.length,
+  index_entry: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "index-entry", "--json"])).stdout).task_count,
+};
+await execFile(process.execPath, ["dist/cli.js", "card", reportPath, cardPath]);
+assert.match(await readFile(cardPath, "utf8"), /width="1200" height="630"/);
+assert.deepEqual(cliChecks, { list: 60, show: "public-001", score: 60, provenance: 1, index_entry: 60 });
+assert.equal(JSON.parse((await execFile(process.execPath, ["dist/cli.js", "index-entry", "--json"])).stdout).saturation, "unknown");
+const defaultMock = await execFile(process.execPath, ["dist/cli.js", "run", "--provider", "mock", "--json"], { maxBuffer: 1_000_000 });
+assert.equal(JSON.parse(defaultMock.stdout).model, "mock:1");
 
 const tasks = await benchmark.listTasks();
 const lookup = (task) => ({ name: "lookup_fact", args: { subject: task.metadata.subject, attribute: task.metadata.attribute }, result: null });
@@ -83,7 +99,7 @@ const honestyMetrics = {
   abstainRate: fields.filter((item) => item.abstained === "true").length / fields.length,
   brier: fields.reduce((sum, item) => sum + Number(item.brier ?? 1), 0) / fields.length,
 };
-const artifact = { task_count: report.rows.length, scores: report.rows.map((row) => row.score), honesty_metrics: honestyMetrics, bad_answer_averages: badAverages, route_status_codes: routes, tool_names: toolNames };
+const artifact = { task_count: report.rows.length, scores: report.rows.map((row) => row.score), honesty_metrics: honestyMetrics, bad_answer_averages: badAverages, cli_commands: [...Object.keys(cliChecks), "run", "card", "serve", "mcp"], route_status_codes: routes, tool_names: toolNames };
 await mkdir("artifacts", { recursive: true });
 await writeFile("artifacts/e2e-report.json", `${JSON.stringify(artifact, null, 2)}\n`);
 assert.match(await readFile("data/PROVENANCE.md", "utf8"), /Seeded fictional knowledge base/);
