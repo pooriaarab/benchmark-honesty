@@ -2,19 +2,39 @@ import assert from "node:assert/strict";
 import { execFile as execFileCallback, spawn } from "node:child_process";
 import { once } from "node:events";
 import { createServer as createNetServer } from "node:net";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { promisify } from "node:util";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 const execFile = promisify(execFileCallback);
 
 await execFile("npm", ["run", "build"]);
-const { benchmark } = await import("../dist/index.js");
+const { benchmark, honestyMetrics: aggregateHonesty } = await import("../dist/index.js");
 const cli = await execFile(process.execPath, ["dist/cli.js", "run", "--model", "offline", "--provider", "mock", "--json"], { maxBuffer: 1_000_000 });
 const report = JSON.parse(cli.stdout);
 assert.equal(report.rows.length, 60);
 assert.ok(report.rows.some((row) => row.score === 1));
 assert.ok(report.rows.some((row) => row.score === 0));
+const tempDirectory = await mkdtemp(join(tmpdir(), "benchmark-honesty-"));
+const reportPath = join(tempDirectory, "report.json");
+const cardPath = join(tempDirectory, "card.svg");
+await writeFile(reportPath, cli.stdout);
+const indexEntry = JSON.parse((await execFile(process.execPath, ["dist/cli.js", "index-entry", "--json"])).stdout);
+const cliChecks = {
+  list: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "list", "--json"])).stdout).tasks.length,
+  show: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "show", "public-001", "--json"])).stdout).task.id,
+  score: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "score", reportPath, "--json"])).stdout).rows.length,
+  provenance: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "provenance", "--json"])).stdout).provenance.length,
+  index_entry: indexEntry.task_count,
+};
+await execFile(process.execPath, ["dist/cli.js", "card", reportPath, cardPath]);
+assert.match(await readFile(cardPath, "utf8"), /width="1200" height="630"/);
+assert.deepEqual(cliChecks, { list: 60, show: "public-001", score: 60, provenance: 1, index_entry: 60 });
+assert.equal(indexEntry.saturation, "unknown");
+const defaultMock = await execFile(process.execPath, ["dist/cli.js", "run", "--provider", "mock", "--json"], { maxBuffer: 1_000_000 });
+assert.equal(JSON.parse(defaultMock.stdout).model, "mock:1");
 
 const tasks = await benchmark.listTasks();
 const lookup = (task) => ({ name: "lookup_fact", args: { subject: task.metadata.subject, attribute: task.metadata.attribute }, result: null });
@@ -77,13 +97,8 @@ try {
   }
 } finally { await client.close(); }
 
-const fields = report.rows.map((row) => Object.fromEntries([...row.reason.matchAll(/(abstained|fabricated|brier)=([^;]+)/g)].map((match) => [match[1], match[2]])));
-const honestyMetrics = {
-  fabricationRate: fields.filter((item) => item.fabricated === "true").length / fields.length,
-  abstainRate: fields.filter((item) => item.abstained === "true").length / fields.length,
-  brier: fields.reduce((sum, item) => sum + Number(item.brier ?? 1), 0) / fields.length,
-};
-const artifact = { task_count: report.rows.length, scores: report.rows.map((row) => row.score), honesty_metrics: honestyMetrics, bad_answer_averages: badAverages, route_status_codes: routes, tool_names: toolNames };
+const honestyMetrics = aggregateHonesty(report.rows);
+const artifact = { task_count: report.rows.length, scores: report.rows.map((row) => row.score), honesty_metrics: honestyMetrics, bad_answer_averages: badAverages, cli_commands: [...Object.keys(cliChecks), "run", "card", "serve", "mcp"], route_status_codes: routes, tool_names: toolNames };
 await mkdir("artifacts", { recursive: true });
 await writeFile("artifacts/e2e-report.json", `${JSON.stringify(artifact, null, 2)}\n`);
 assert.match(await readFile("data/PROVENANCE.md", "utf8"), /Seeded fictional knowledge base/);
