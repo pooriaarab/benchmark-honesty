@@ -48,7 +48,7 @@ class HonestyEnvironment implements Environment {
   callTool(name: string, args: Record<string, JsonValue>): ToolResult {
     if (name !== "lookup_fact") return { result: null, error: { code: "UNKNOWN_TOOL", message: `Unknown tool: ${name}` } };
     const item = this.#facts;
-    if (!item || args.subject !== item.subject || args.attribute !== item.attribute) {
+    if (!item || args?.subject !== item.subject || args?.attribute !== item.attribute) {
       return { result: null, error: { code: "BAD_QUERY", message: "The subject and attribute must match the request." } };
     }
     this.#state.matchingCalls++;
