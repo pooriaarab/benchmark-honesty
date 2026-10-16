@@ -92,7 +92,7 @@ function lastJsonObject(text: string): { record: Record<string, unknown>; prose:
       else if (char === '"') quoted = false;
       continue;
     }
-    if (char === '"') quoted = true;
+    if (char === '"' && depth > 0) quoted = true;
     else if (char === "{") { if (depth === 0) start = index; depth++; }
     else if (char === "}" && depth > 0) { if (--depth === 0) spans.push({ start, end: index + 1 }); }
   }
