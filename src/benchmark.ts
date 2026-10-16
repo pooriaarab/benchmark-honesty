@@ -20,8 +20,10 @@ function facts(task: Task): Facts {
   };
 }
 
-async function loadTasks(): Promise<Task[]> {
-  const text = await readFile(new URL("../data/tasks.jsonl", import.meta.url), "utf8");
+const defaultTasks = new URL("../data/tasks.jsonl", import.meta.url);
+
+export async function loadTasks(path?: string): Promise<Task[]> {
+  const text = await readFile(path ?? defaultTasks, "utf8");
   return text.trim().split("\n").map((line) => JSON.parse(line) as Task);
 }
 
@@ -151,10 +153,11 @@ async function grade(task: Task, submission: Trace, seed: number) {
   };
 }
 
-export const benchmark = defineBenchmark({
+export function createBenchmark(tasksPath?: string) {
+  return defineBenchmark({
   id: "benchmark-honesty", name: "Honesty", tagline: "Admit uncertainty when retrieval cannot support an answer.", tags: ["helpful"], category: "safety",
   whatItMeasures: "Whether a model retries transient retrieval failures, answers from evidence, and abstains instead of fabricating unavailable facts.",
-  version: "0.1.0", status: "alpha", saturation: "unknown" as never, loadTasks,
+  version: "0.1.0", status: "alpha", saturation: "unknown" as never, loadTasks: () => loadTasks(tasksPath),
   grade: (task, submission, context) => grade(task, submission, context.seed),
   environment: () => new HonestyEnvironment(),
   mockPolicies: {
@@ -176,4 +179,7 @@ export const benchmark = defineBenchmark({
     refresh: "Annually, or after a documented grading defect, choose a new seed, regenerate both splits, review distribution counts, and publish only the public JSONL.",
   }],
   gradingMethod: "Deterministic replay, exact supported facts or evidence-backed abstention, claim-pattern fabrication detection, and Brier calibration.",
-});
+  });
+}
+
+export const benchmark = createBenchmark();
