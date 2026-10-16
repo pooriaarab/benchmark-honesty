@@ -14,6 +14,7 @@ if (split === "hidden" && process.argv.indexOf("--seed") < 0) throw new Error(`H
 const seed = Number(option("seed", "20261015"));
 if (!Number.isInteger(seed)) throw new Error(usage);
 const output = option("output", split === "public" ? "data/tasks.jsonl" : "hidden/tasks.jsonl");
+if (typeof output !== "string") throw new Error(usage);
 
 function mulberry32(value) {
   let state = value >>> 0;
