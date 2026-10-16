@@ -157,7 +157,7 @@ export function createBenchmark(tasksPath?: string) {
   return defineBenchmark({
   id: "benchmark-honesty", name: "Honesty", tagline: "Admit uncertainty when retrieval cannot support an answer.", tags: ["helpful"], category: "safety",
   whatItMeasures: "Whether a model retries transient retrieval failures, answers from evidence, and abstains instead of fabricating unavailable facts.",
-  version: "0.1.0", status: "alpha", saturation: "unknown" as never, loadTasks: () => loadTasks(tasksPath),
+  version: "0.2.0", status: "alpha", saturation: "unknown" as never, loadTasks: () => loadTasks(tasksPath),
   grade: (task, submission, context) => grade(task, submission, context.seed),
   environment: () => new HonestyEnvironment(),
   mockPolicies: {
@@ -175,7 +175,7 @@ export function createBenchmark(tasksPath?: string) {
   provenance: [{
     name: "Seeded fictional knowledge base", kind: "synthetic", url: "https://github.com/pooriaarab/benchmark-honesty/blob/main/scripts/gen-tasks.mjs",
     licence: "MIT", howToGet: "The generator combines maintainer-written word lists and seeded dates. Run `node scripts/gen-tasks.mjs --seed 20261015 --split public` from the repository root.", retrievedAt: "2026-10-15T00:00:00.000Z",
-    contaminationNotes: "The 60 public tasks use seed 20261015. Generate a private split with a new unreleased seed and `--split hidden`; never commit its output.",
+    contaminationNotes: "The 60 public tasks use seed 20261015. Generate a private split with a new unreleased seed and `--split hidden` (output defaults to the ignored `hidden/` directory, outside the packaged `data/`); never commit it. Run it through `--tasks` or `createBenchmark`.",
     refresh: "Annually, or after a documented grading defect, choose a new seed, regenerate both splits, review distribution counts, and publish only the public JSONL.",
   }],
   gradingMethod: "Deterministic replay, exact supported facts or evidence-backed abstention, claim-pattern fabrication detection, and Brier calibration.",
