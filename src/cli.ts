@@ -2,11 +2,11 @@
 import { readFile } from "node:fs/promises";
 import { parseArgs } from "node:util";
 import {
-  bootstrapCI, createCli, mockAdapter, openaiCompatAdapter, openrouterAdapter, renderMarkdown,
+  createCli, mockAdapter, openaiCompatAdapter, openrouterAdapter, renderMarkdown,
   run as runBenchmark, type Benchmark, type ModelAdapter, type RunReport, type Task,
 } from "benchmark-core";
 import { benchmark, createBenchmark } from "./benchmark.js";
-import { honestyMetrics, type HonestyMetrics } from "./index.js";
+import { honestyReport, type HonestyMetrics } from "./index.js";
 import { startMcp } from "./mcp.js";
 
 const bin = "benchmark-honesty";
@@ -23,10 +23,12 @@ function metricLines(metrics: HonestyMetrics): string {
   const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
   return [
     "",
+    `- Balanced headline: ${percent(metrics.balanced)} (answerable accuracy ${percent(metrics.answerableAccuracy)} x unanswerable honesty ${percent(metrics.unanswerableHonesty)})`,
     `- Fabrication rate (unanswerable): ${percent(metrics.fabricationRate)}`,
     `- Abstain rate (unanswerable): ${percent(metrics.abstainRate)}`,
     `- Over-abstain rate (answerable): ${percent(metrics.overAbstainRate)}`,
     `- Mean Brier: ${metrics.brier.toFixed(4)}`,
+    `- Per-task mean: ${percent(metrics.taskMean)}`,
   ].join("\n");
 }
 
@@ -44,7 +46,7 @@ async function runCommand(clean: string[], json: boolean, target: Benchmark<Task
   const provider = parsed.values.provider;
   if (!model || !provider) throw new Error("run needs --model and --provider.");
   const seed = Number(parsed.values.seed ?? 1);
-  const report = await runBenchmark(target, adapterFor(provider, model, seed, target), {
+  const report = honestyReport(await runBenchmark(target, adapterFor(provider, model, seed, target), {
     ...parsed.values.concurrency ? { concurrency: Number(parsed.values.concurrency) } : {},
     ...parsed.values.timeout ? { timeoutMs: Number(parsed.values.timeout) } : {},
     ...parsed.values.retries ? { retries: Number(parsed.values.retries) } : {},
@@ -52,9 +54,8 @@ async function runCommand(clean: string[], json: boolean, target: Benchmark<Task
     ...parsed.values["max-turns"] ? { maxTurns: Number(parsed.values["max-turns"]) } : {},
     ...parsed.values["max-tool-calls"] ? { maxToolCalls: Number(parsed.values["max-tool-calls"]) } : {},
     ...parsed.values.budget ? { budgetUsd: Number(parsed.values.budget) } : {},
-  });
-  const honesty = honestyMetrics(report.rows);
-  console.log(json ? JSON.stringify({ ...report, honesty }) : renderMarkdown(report) + metricLines(honesty));
+  }));
+  console.log(json ? JSON.stringify(report) : renderMarkdown(report) + metricLines(report.honesty));
   return report.rows.some((row) => row.error) ? 2 : 0;
 }
 
@@ -70,15 +71,8 @@ async function scoreCommand(clean: string[], json: boolean, target: Benchmark<Ta
     const grade = await target.score(task, row.submission, { seed: original.seed });
     rows.push({ ...row, score: grade.score, reason: grade.reason });
   }
-  const scores = rows.map((row) => row.score);
-  const honesty = honestyMetrics(rows);
-  const rescored = {
-    ...original, rows,
-    mean: scores.length ? scores.reduce((sum, score) => sum + score, 0) / scores.length : 0,
-    confidenceInterval95: scores.length ? bootstrapCI(scores, original.seed) : { low: 0, high: 0 },
-    honesty,
-  };
-  console.log(json ? JSON.stringify(rescored) : renderMarkdown(rescored) + metricLines(honesty));
+  const rescored = honestyReport({ ...original, rows });
+  console.log(json ? JSON.stringify(rescored) : renderMarkdown(rescored) + metricLines(rescored.honesty));
   return 0;
 }
 
