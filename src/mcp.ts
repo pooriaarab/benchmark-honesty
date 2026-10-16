@@ -3,7 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { MAX_TOOL_LOG_ENTRIES, openrouterAdapter, run as runBenchmark, type Benchmark, type Task } from "benchmark-core";
 import { benchmark } from "./benchmark.js";
-import { honestyMetrics } from "./index.js";
+import { honestyReport } from "./index.js";
 
 const tools = [
   { name: "list_tasks", description: "List benchmark task ids and prompts.", inputSchema: { type: "object", properties: {}, additionalProperties: false } },
@@ -39,7 +39,7 @@ export function createMcpServer(target: Benchmark<Task> = benchmark) {
         if (typeof input.model !== "string") return content({ error: "model is required." }, true);
         if (!process.env.OPENROUTER_API_KEY) return content({ error: "OPENROUTER_API_KEY is required to run a benchmark." }, true);
         const report = await runBenchmark(target, openrouterAdapter({ model: input.model }));
-        return content({ ...report, honesty: honestyMetrics(report.rows) });
+        return content(honestyReport(report));
       }
       if (request.params.name === "get_provenance") return content({ provenance: target.definition.provenance });
       return content({ error: `Unknown tool: ${request.params.name}` }, true);
