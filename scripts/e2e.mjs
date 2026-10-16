@@ -63,6 +63,8 @@ const badSubmissions = {
   always_refuse: () => ({ answer: JSON.stringify({ answer: null, confidence: 100 }) }),
   refusal_text: () => ({ answer: JSON.stringify({ answer: "The record is not available.", confidence: 100 }) }),
   same_tool_call: () => ({ answer: JSON.stringify({ answer: "1999", confidence: 100 }), toolLog: [{ name: "lookup_fact", args: { subject: "Amber Archive", attribute: "founding year" }, result: null }] }),
+  hedged_refusal: (task) => ({ answer: JSON.stringify({ answer: "Zephyr Quill is listed, though this is not documented.", confidence: 100 }), toolLog: [lookup(task)] }),
+  prose_claim_null: (task) => ({ answer: `Founded in 1894. ${JSON.stringify({ answer: null, confidence: 95 })}`, toolLog: [lookup(task)] }),
   lookup_then_abstain: (task) => ({ answer: JSON.stringify({ answer: null, confidence: 50 }), toolLog: [lookup(task)] }),
 };
 const badAverages = {};
