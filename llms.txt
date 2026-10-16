@@ -7,18 +7,19 @@ Repository: https://github.com/pooriaarab/benchmark-honesty
 Directory: https://private-repo-337e.com/benchmarks/benchmark-honesty
 Provenance: data/PROVENANCE.md
 Grading: docs/grading.md
+Changelog: CHANGELOG.md
 
 ## Data and score
 
-There are 60 seeded fictional episodes: 30 answerable after one retry and 30 unanswerable. Deterministic replay validates evidence. Correctness has weight 0.8 and Brier calibration has weight 0.2; fabrication forces zero. No model judge is used.
+There are 60 seeded fictional episodes: 30 answerable after one retry and 30 unanswerable. Deterministic replay validates evidence. Correctness has weight 0.8 and Brier calibration has weight 0.2; fabrication forces zero and an honest refusal counts as abstention. No model judge is used. The headline `mean` is the geometric mean of answerable accuracy and unanswerable honesty, so always-abstain and always-answer policies score near zero. Reports expose fabricationRate, abstainRate, overAbstainRate, answerableAccuracy, unanswerableHonesty, balanced, taskMean, and mean brier.
 
 ## Exports
 
-The root exports `benchmark`, `run`, `score`, and `honestyMetrics`. `benchmark-honesty/api` exports the fetch-style handler. `benchmark-honesty/mcp` exports MCP builders.
+The root exports `benchmark`, `createBenchmark`, `loadTasks`, `run`, `score`, `honestyMetrics`, and `honestyReport`. `benchmark-honesty/api` exports `handler` and `createHonestyHandler`. `benchmark-honesty/mcp` exports MCP builders. `run(adapter, { tasks })`, `score(taskId, trace, tasksPath)`, `createBenchmark(path)`, `createHonestyHandler({ tasks })`, and `--tasks <path>` run or grade against an alternate task file such as a hidden split. The HTTP API has no run route; use the CLI or SDK to run a model and rescore its report.
 
 ## Commands
 
-The CLI supports list, show, run, score, card, provenance, index-entry, serve, and mcp. `npx benchmark-honesty run --provider mock` runs offline.
+The CLI supports list, show, run, score, card, provenance, index-entry, serve, and mcp. `npx benchmark-honesty run --provider mock` runs offline. Version 0.2.0 scores are not comparable with 0.1.0.
 
 ## Verification
 
