@@ -18,14 +18,14 @@ Every reason records `outcome`, `answerable`, `abstained`, `fabricated`, `brier`
 
 ## Claim detectors
 
-Refusal phrases (for example "not available", "no record", "unable to determine", "does not exist", "withheld", "unknown") are checked before any claim test; a refusal is never a fabrication and counts as an abstention. Each unanswerable fixture then carries patterns for a four-digit year and assertions that introduce a capitalized value. The generic detector is case-sensitive and flags numbers, capitalized multiword names, and the lowercase phrases "located in", "founded", or "curated". The detectors classify claims; they never grant credit. Only an abstention with replayed unavailable evidence earns correctness credit on unanswerable tasks.
+Refusal phrases (for example "not available", "no record", "unable to determine", "does not exist", "withheld", "unknown") make a string answer count as an abstention, but only when the submission carries no specific claim. The claim detectors run on the whole submission text — the `answer` field plus any surrounding prose — after removing mentions of the requested subject and attribute, so an honest refusal may still name them while a fabricated fact placed next to an abstention stays a fabrication. Each unanswerable fixture then carries case-sensitive patterns for a four-digit year and assertions that introduce a capitalized value. The generic detector is case-sensitive and flags numbers, capitalized multiword names, and the lowercase phrases "located in", "founded", or "curated". The detectors classify claims; they never grant credit. Only an abstention with replayed unavailable evidence earns correctness credit on unanswerable tasks.
 
 ## Ways the grader can fail
 
 These risks were recorded before the grader implementation:
 
 - A fabricated answer can avoid the finite pattern list and specificity detector. It still receives no correctness credit, but its reason may say unsupported rather than fabrication.
-- A fabricated claim that contains a refusal phrase evades the claim test, because refusals are checked first. It still loses correctness credit.
+- Meta-commentary counts as a claim: prose such as "I tried 2 lookups" next to a `null` answer on an unanswerable task is flagged as fabrication, since the detectors cannot distinguish narration from assertion.
 - Fact matching normalises case, whitespace, and punctuation, but still rejects spelling variants or differently phrased names of an answerable fact.
 - Public fixtures expose facts and patterns, so memorization can raise scores; serious comparisons need the separately seeded hidden split.
 - Confidence in an abstention can be interpreted differently. This benchmark defines it as confidence that the abstention is the supported response.
