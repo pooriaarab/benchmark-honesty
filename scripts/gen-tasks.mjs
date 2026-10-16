@@ -93,7 +93,6 @@ for (let index = 0; index < 60; index++) {
       seed, split, subject, attribute, answerable,
       unavailable: answerable ? null : unavailable,
       fact: expected,
-      unsupportedPatterns: answerable ? [] : ["\\b(?:18|19|20)\\d{2}\\b", "\\b(?:in|at|is|was|founded by|curated by)\\s+[A-Z][A-Za-z]+"],
     },
   });
 }
