@@ -60,8 +60,8 @@ const namedTask = tasks.find((task) => task.metadata.answerable && task.metadata
 const unCall = lookup(unanswerableTask);
 const nameCall = lookup(namedTask);
 const gradingCases = [
-  ["refusal_text_scores_high", unanswerableTask, { answer: JSON.stringify({ answer: "The record is not available in the knowledge base.", confidence: 90 }), toolLog: [unCall] }, 0.99],
-  ["subject_named_refusal", unanswerableTask, { answer: JSON.stringify({ answer: `Unable to determine the ${unanswerableTask.metadata.attribute} of ${unanswerableTask.metadata.subject}.`, confidence: 90 }), toolLog: [unCall] }, 0.99],
+  ["content_refusal_fabricates", unanswerableTask, { answer: JSON.stringify({ answer: "The record is not available in the knowledge base.", confidence: 90 }), toolLog: [unCall] }, 0],
+  ["subject_named_fabricates", unanswerableTask, { answer: JSON.stringify({ answer: `Unable to determine the ${unanswerableTask.metadata.attribute} of ${unanswerableTask.metadata.subject}.`, confidence: 90 }), toolLog: [unCall] }, 0],
   ["sentence_refusal_scores_high", unanswerableTask, { answer: JSON.stringify({ answer: "I cannot determine this", confidence: 90 }), toolLog: [unCall] }, 0.99],
   ["fenced_json_scores", namedTask, { answer: `\`\`\`json\n${JSON.stringify({ answer: namedTask.expected, confidence: 100 })}\n\`\`\``, toolLog: [nameCall, nameCall] }, 1],
   ["prose_wrapped_scores", namedTask, { answer: `Here is the result: ${JSON.stringify({ answer: namedTask.expected, confidence: 100 })}`, toolLog: [nameCall, nameCall] }, 1],
@@ -110,10 +110,11 @@ for (const [name, wrap] of Object.entries(honestWrappers)) {
   assert.ok(gradingOutcomes[name].score >= 0.99, `${name} averaged ${gradingOutcomes[name].score}`);
 }
 
-// Every documented refusal value inside the `answer` field abstains. On
-// unanswerable tasks it earns correctness credit; on answerable tasks it is an
+// Every documented refusal value inside the `answer` field abstains: the exact
+// tokens plus refusals that carry only function words. On unanswerable tasks
+// each earns correctness credit; on answerable tasks each is an
 // over-abstention (not correct, never a fabrication).
-const refusalValues = ["", "N/A", "None", "unknown", "not available", "I cannot determine this", "cannot be determined", "unable to determine"];
+const refusalValues = ["", "N/A", "None", "unknown", "not available", "unavailable", "cannot determine", "I cannot determine this", "it is unknown", "cannot be determined", "unable to determine"];
 const refusalRows = [];
 for (const value of refusalValues) {
   for (const task of tasks) {
@@ -132,8 +133,9 @@ gradingOutcomes.refusal_values = {
 };
 
 // A guessed answer fabricates whatever its shape: a bare name, a year, a
-// lowercase phrase, an all-caps token, or a sentence in the `answer` field.
-const guessedShapes = ["Zephyr Quill", "1999", "cobalt bay", "NASA", "somewhere north", "The head curator is Basil North."];
+// lowercase phrase, an all-caps token, a purely symbolic answer, or a refusal
+// phrase embedded among content words in the `answer` field.
+const guessedShapes = ["Zephyr Quill", "1999", "cobalt bay", "NASA", "somewhere north", "The head curator is Basil North.", "???", "—", "%%", "The head curator is Basil North, though this is not available", "the answer is not available at this time", "none of the above", "Unable to determine the founding year of Amber Archive", "The record is not available in the knowledge base"];
 const guessRows = [];
 for (const guess of guessedShapes) {
   for (const task of tasks) {
