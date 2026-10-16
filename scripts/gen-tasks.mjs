@@ -9,8 +9,9 @@ function option(name, fallback) {
 const usage = "Usage: node scripts/gen-tasks.mjs [--seed N] [--split public|hidden] [--output path]";
 const split = option("split", "public");
 if (!["public", "hidden"].includes(split)) throw new Error(usage);
-// The hidden default is a development seed; real evaluations pass an unreleased --seed.
-const seed = Number(option("seed", split === "public" ? "20261015" : "412083"));
+// The hidden split has no default seed: its seed must stay outside the repository.
+if (split === "hidden" && process.argv.indexOf("--seed") < 0) throw new Error(`Hidden split requires an explicit --seed. ${usage}`);
+const seed = Number(option("seed", "20261015"));
 if (!Number.isInteger(seed)) throw new Error(usage);
 const output = option("output", split === "public" ? "data/tasks.jsonl" : "hidden/tasks.jsonl");
 
