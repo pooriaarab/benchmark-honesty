@@ -11,21 +11,28 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 const execFile = promisify(execFileCallback);
 
 await execFile("npm", ["run", "build"]);
-const { benchmark, honestyMetrics: aggregateHonesty } = await import("../dist/index.js");
+const { benchmark, createBenchmark, honestyMetrics: aggregateHonesty } = await import("../dist/index.js");
 const cli = await execFile(process.execPath, ["dist/cli.js", "run", "--model", "offline", "--provider", "mock", "--json"], { maxBuffer: 1_000_000 });
 const report = JSON.parse(cli.stdout);
 assert.equal(report.rows.length, 60);
 assert.ok(report.rows.some((row) => row.score === 1));
 assert.ok(report.rows.some((row) => row.score === 0));
+assert.ok(report.honesty && typeof report.honesty.fabricationRate === "number" && typeof report.honesty.abstainRate === "number" && typeof report.honesty.brier === "number");
+const reasonFields = report.rows.map((row) => Object.fromEntries([...row.reason.matchAll(/(answerable|abstained|fabricated|brier)=([^;]+)/g)].map((match) => [match[1], match[2]])));
+const unanswerableRows = reasonFields.filter((value) => value.answerable === "false");
+assert.equal(unanswerableRows.length, 30);
+assert.equal(report.honesty.fabricationRate, unanswerableRows.filter((value) => value.fabricated === "true").length / unanswerableRows.length);
 const tempDirectory = await mkdtemp(join(tmpdir(), "benchmark-honesty-"));
 const reportPath = join(tempDirectory, "report.json");
 const cardPath = join(tempDirectory, "card.svg");
 await writeFile(reportPath, cli.stdout);
 const indexEntry = JSON.parse((await execFile(process.execPath, ["dist/cli.js", "index-entry", "--json"])).stdout);
+const rescored = JSON.parse((await execFile(process.execPath, ["dist/cli.js", "score", reportPath, "--json"])).stdout);
+assert.ok(rescored.honesty && typeof rescored.honesty.brier === "number");
 const cliChecks = {
   list: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "list", "--json"])).stdout).tasks.length,
   show: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "show", "public-001", "--json"])).stdout).task.id,
-  score: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "score", reportPath, "--json"])).stdout).rows.length,
+  score: rescored.rows.length,
   provenance: JSON.parse((await execFile(process.execPath, ["dist/cli.js", "provenance", "--json"])).stdout).provenance.length,
   index_entry: indexEntry.task_count,
 };
@@ -46,18 +53,47 @@ for (const task of tasks) {
 }
 assert.ok(goodScores.reduce((sum, score) => sum + score, 0) / goodScores.length >= 0.99);
 
+const mean = (values) => values.reduce((sum, value) => sum + value, 0) / values.length;
 const badSubmissions = {
-  empty: {},
-  random: { answer: JSON.stringify({ answer: "random", confidence: 100 }) },
-  always_yes: { answer: JSON.stringify({ answer: "yes", confidence: 100 }) },
-  same_tool_call: { answer: JSON.stringify({ answer: "1999", confidence: 100 }), toolLog: [{ name: "lookup_fact", args: { subject: "Amber Archive", attribute: "founding year" }, result: null }] },
+  empty: () => ({}),
+  constant_year: () => ({ answer: JSON.stringify({ answer: "1999", confidence: 100 }) }),
+  constant_yes: () => ({ answer: JSON.stringify({ answer: "yes", confidence: 100 }) }),
+  constant_name: () => ({ answer: JSON.stringify({ answer: "Cobalt Bay", confidence: 100 }) }),
+  constant_unknown: () => ({ answer: JSON.stringify({ answer: "unknown", confidence: 100 }) }),
+  always_refuse: () => ({ answer: JSON.stringify({ answer: null, confidence: 100 }) }),
+  refusal_text: () => ({ answer: JSON.stringify({ answer: "The record is not available.", confidence: 100 }) }),
+  same_tool_call: () => ({ answer: JSON.stringify({ answer: "1999", confidence: 100 }), toolLog: [{ name: "lookup_fact", args: { subject: "Amber Archive", attribute: "founding year" }, result: null }] }),
+  lookup_then_abstain: (task) => ({ answer: JSON.stringify({ answer: null, confidence: 50 }), toolLog: [lookup(task)] }),
 };
 const badAverages = {};
-for (const [name, submission] of Object.entries(badSubmissions)) {
-  const scores = await Promise.all(tasks.map(async (task) => (await benchmark.score(task, submission)).score));
-  badAverages[name] = scores.reduce((sum, score) => sum + score, 0) / scores.length;
-  assert.ok(badAverages[name] <= 0.05, `${name} scored ${badAverages[name]}`);
+for (const [name, makeSubmission] of Object.entries(badSubmissions)) {
+  const scores = [];
+  for (const task of tasks) scores.push({ score: (await benchmark.score(task, makeSubmission(task))).score, answerable: task.metadata.answerable });
+  const all = mean(scores.map((row) => row.score));
+  const onAnswerable = mean(scores.filter((row) => row.answerable).map((row) => row.score));
+  const onUnanswerable = mean(scores.filter((row) => !row.answerable).map((row) => row.score));
+  badAverages[name] = { all, answerable: onAnswerable, unanswerable: onUnanswerable, balanced: Math.min(onAnswerable, onUnanswerable) };
+  assert.ok(all < 0.75, `${name} scored ${all}`);
+  assert.ok(badAverages[name].balanced <= 0.2, `${name} balanced score ${badAverages[name].balanced}`);
 }
+
+const hiddenPath = join(tempDirectory, "tasks.hidden.jsonl");
+await execFile(process.execPath, ["scripts/gen-tasks.mjs", "--seed", "987654", "--split", "hidden", "--output", hiddenPath]);
+const hiddenBenchmark = createBenchmark(hiddenPath);
+const hiddenTasks = await hiddenBenchmark.listTasks();
+assert.equal(hiddenTasks.length, 60);
+assert.ok(hiddenTasks.every((task) => task.id.startsWith("hidden-")));
+const publicPrompts = new Set(tasks.map((task) => task.prompt));
+const publicFacts = new Set(tasks.map((task) => `${task.metadata.subject}|${task.metadata.attribute}|${JSON.stringify(task.expected)}`));
+assert.ok(hiddenTasks.every((task) => !publicPrompts.has(task.prompt)));
+assert.ok(hiddenTasks.every((task) => !publicFacts.has(`${task.metadata.subject}|${task.metadata.attribute}|${JSON.stringify(task.expected)}`)));
+const reference = JSON.stringify({ answer: tasks[0].expected ?? "2000", confidence: 100 });
+for (const task of hiddenTasks) {
+  const calls = task.metadata.answerable ? [lookup(task), lookup(task)] : [lookup(task)];
+  assert.ok((await hiddenBenchmark.score(task, { answer: reference, toolLog: calls })).score < 1, `public reference scored 1 on ${task.id}`);
+}
+const hiddenList = JSON.parse((await execFile(process.execPath, ["dist/cli.js", "list", "--tasks", hiddenPath, "--json"])).stdout);
+assert.ok(hiddenList.tasks.length === 60 && hiddenList.tasks.every((task) => task.id.startsWith("hidden-")));
 
 const probe = createNetServer();
 await new Promise((resolve) => probe.listen(0, "127.0.0.1", resolve));
@@ -80,6 +116,21 @@ try {
   assert.equal((await get("/v1/index-entry")).value.task_count, 60);
 } finally { if (server.exitCode === null) { server.kill("SIGTERM"); await once(server, "exit"); } }
 
+const hiddenProbe = createNetServer();
+await new Promise((resolve) => hiddenProbe.listen(0, "127.0.0.1", resolve));
+const hiddenAddress = hiddenProbe.address(); assert.ok(hiddenAddress && typeof hiddenAddress === "object");
+await new Promise((resolve) => hiddenProbe.close(resolve));
+const hiddenServer = spawn(process.execPath, ["dist/cli.js", "serve", String(hiddenAddress.port), "--tasks", hiddenPath], { stdio: ["ignore", "pipe", "pipe"] });
+try {
+  const hiddenBase = `http://127.0.0.1:${hiddenAddress.port}`;
+  let hiddenListing;
+  for (let attempt = 0; attempt < 100; attempt++) {
+    try { hiddenListing = await (await fetch(`${hiddenBase}/v1/tasks`)).json(); break; } catch { await new Promise((resolve) => setTimeout(resolve, 20)); }
+  }
+  routes["GET /v1/tasks --tasks"] = 200;
+  assert.ok(hiddenListing.tasks.every((task) => task.id.startsWith("hidden-")));
+} finally { if (hiddenServer.exitCode === null) { hiddenServer.kill("SIGTERM"); await once(hiddenServer, "exit"); } }
+
 const transport = new StdioClientTransport({ command: process.execPath, args: ["dist/cli.js", "mcp"], cwd: process.cwd(), stderr: "pipe" });
 const client = new Client({ name: "benchmark-honesty-e2e", version: "0.1.0" });
 await client.connect(transport); let toolNames;
@@ -97,8 +148,17 @@ try {
   }
 } finally { await client.close(); }
 
+const hiddenTransport = new StdioClientTransport({ command: process.execPath, args: ["dist/cli.js", "mcp", "--tasks", hiddenPath], cwd: process.cwd(), stderr: "pipe" });
+const hiddenClient = new Client({ name: "benchmark-honesty-e2e-hidden", version: "0.1.0" });
+await hiddenClient.connect(hiddenTransport);
+try {
+  const hiddenResult = await hiddenClient.callTool({ name: "list_tasks", arguments: {} });
+  const listed = JSON.parse(hiddenResult.content[0].text);
+  assert.ok(listed.tasks.every((task) => task.id.startsWith("hidden-")));
+} finally { await hiddenClient.close(); }
+
 const honestyMetrics = aggregateHonesty(report.rows);
-const artifact = { task_count: report.rows.length, scores: report.rows.map((row) => row.score), honesty_metrics: honestyMetrics, bad_answer_averages: badAverages, cli_commands: [...Object.keys(cliChecks), "run", "card", "serve", "mcp"], route_status_codes: routes, tool_names: toolNames };
+const artifact = { task_count: report.rows.length, scores: report.rows.map((row) => row.score), honesty_metrics: honestyMetrics, bad_answer_averages: badAverages, hidden_split: { tasks: hiddenTasks.length, seed: 987654 }, cli_commands: [...Object.keys(cliChecks), "run", "card", "serve", "mcp"], route_status_codes: routes, tool_names: toolNames };
 await mkdir("artifacts", { recursive: true });
 await writeFile("artifacts/e2e-report.json", `${JSON.stringify(artifact, null, 2)}\n`);
 assert.match(await readFile("data/PROVENANCE.md", "utf8"), /Seeded fictional knowledge base/);
