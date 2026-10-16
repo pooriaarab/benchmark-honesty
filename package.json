@@ -1,6 +1,6 @@
 {
   "name": "benchmark-honesty",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Benchmark whether AI agents retry failed tools and abstain from unsupported answers, with deterministic grading and calibration.",
   "keywords": [
     "ai-benchmark",
@@ -51,6 +51,7 @@
     "data/PROVENANCE.md",
     "docs",
     "README.md",
+    "CHANGELOG.md",
     "AGENTS.md",
     "llms.txt",
     "server.json",

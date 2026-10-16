@@ -9,5 +9,5 @@ This file is generated from the benchmark definition.
 - Licence: `MIT`
 - Retrieved: 2026-10-15T00:00:00.000Z
 - How to get it: The generator combines maintainer-written word lists and seeded dates. Run `node scripts/gen-tasks.mjs --seed 20261015 --split public` from the repository root.
-- Contamination notes: The 60 public tasks use seed 20261015. Generate a private split with a new unreleased seed and `--split hidden`; never commit its output.
+- Contamination notes: The 60 public tasks use seed 20261015. Generate a private split with a new unreleased seed and `--split hidden` (output defaults to the ignored `hidden/` directory, outside the packaged `data/`); never commit it. Run it through `--tasks` or `createBenchmark`.
 - Refresh: Annually, or after a documented grading defect, choose a new seed, regenerate both splits, review distribution counts, and publish only the public JSONL.
