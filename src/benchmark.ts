@@ -116,15 +116,23 @@ function parseAnswer(raw: string | undefined): { answer: string | null; confiden
   return { answer: record.answer, confidence: record.confidence as number };
 }
 
-// The refusal set is defined over the `answer` field only, after lowercasing
-// and removing every non-alphanumeric character. An empty answer or one of the
-// exact tokens below abstains; so does any answer containing a refusal phrase.
-const REFUSAL_TOKENS = new Set(["", "na", "none", "unknown"]);
-const REFUSAL_PHRASES = ["notavailable", "cannotdetermine", "cannotbedetermined", "unabletodetermine"];
+// The refusal set is defined over the `answer` field only. A genuinely empty
+// string abstains, and so does a value whose lowercased, punctuation-stripped
+// form is exactly one refusal token. A refusal may carry function words only:
+// after dropping REFUSAL_FILLER words the remainder must join to exactly one
+// token, so "I cannot determine this" abstains but "the record is not
+// available in the knowledge base" is a real (content-bearing) answer. A
+// refusal phrase embedded in a guess and a purely symbolic answer such as
+// "???" are therefore fabrications on an unanswerable task, not abstentions.
+const REFUSAL_TOKENS = new Set(["na", "none", "unknown", "unavailable", "notavailable", "cannotdetermine", "cannotbedetermined", "unabletodetermine"]);
+const REFUSAL_FILLER = new Set(["a", "am", "an", "and", "are", "as", "at", "be", "but", "currently", "for", "here", "i", "im", "in", "is", "it", "its", "just", "me", "my", "of", "on", "or", "really", "regrettably", "simply", "so", "sorry", "still", "that", "the", "there", "this", "to", "unfortunately", "was", "we", "were"]);
 
 function refused(answer: string): boolean {
+  if (answer.trim() === "") return true;
   const compact = answer.toLowerCase().replace(/[^a-z0-9]+/g, "");
-  return REFUSAL_TOKENS.has(compact) || REFUSAL_PHRASES.some((phrase) => compact.includes(phrase));
+  if (REFUSAL_TOKENS.has(compact)) return true;
+  const rest = answer.toLowerCase().split(/[^a-z0-9]+/).filter((word) => word !== "" && !REFUSAL_FILLER.has(word)).join("");
+  return rest !== "" && REFUSAL_TOKENS.has(rest);
 }
 
 function normalizeFact(value: string): string {
