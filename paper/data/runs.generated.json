@@ -9,8 +9,8 @@
         "version": "0.2.0"
       },
       "model": "script:empty:100",
-      "startedAt": "2026-10-29T02:16:23.569Z",
-      "completedAt": "2026-10-29T02:16:23.574Z",
+      "startedAt": "2026-10-29T03:15:13.969Z",
+      "completedAt": "2026-10-29T03:15:13.972Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -2808,8 +2808,8 @@
         "version": "0.2.0"
       },
       "model": "script:constant:100",
-      "startedAt": "2026-10-29T02:16:23.858Z",
-      "completedAt": "2026-10-29T02:16:23.859Z",
+      "startedAt": "2026-10-29T03:15:14.227Z",
+      "completedAt": "2026-10-29T03:15:14.228Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -5607,8 +5607,8 @@
         "version": "0.2.0"
       },
       "model": "script:echo:100",
-      "startedAt": "2026-10-29T02:16:24.116Z",
-      "completedAt": "2026-10-29T02:16:24.117Z",
+      "startedAt": "2026-10-29T03:15:14.457Z",
+      "completedAt": "2026-10-29T03:15:14.458Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -5619,7 +5619,7 @@
         "tasks": 60,
         "passed": 0,
         "failed": 0,
-        "latencyMs": 2,
+        "latencyMs": 1,
         "costUsd": 0
       },
       "rows": [
@@ -8406,8 +8406,8 @@
         "version": "0.2.0"
       },
       "model": "script:refuse:100",
-      "startedAt": "2026-10-29T02:16:24.367Z",
-      "completedAt": "2026-10-29T02:16:24.368Z",
+      "startedAt": "2026-10-29T03:15:14.683Z",
+      "completedAt": "2026-10-29T03:15:14.683Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -11205,8 +11205,8 @@
         "version": "0.2.0"
       },
       "model": "script:first-tool:100",
-      "startedAt": "2026-10-29T02:16:24.612Z",
-      "completedAt": "2026-10-29T02:16:24.614Z",
+      "startedAt": "2026-10-29T03:15:14.904Z",
+      "completedAt": "2026-10-29T03:15:14.905Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -21984,8 +21984,8 @@
         "version": "0.2.0"
       },
       "model": "mock:1",
-      "startedAt": "2026-10-29T02:16:24.869Z",
-      "completedAt": "2026-10-29T02:16:24.871Z",
+      "startedAt": "2026-10-29T03:15:15.127Z",
+      "completedAt": "2026-10-29T03:15:15.129Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
@@ -21996,7 +21996,7 @@
         "tasks": 60,
         "passed": 60,
         "failed": 0,
-        "latencyMs": 2,
+        "latencyMs": 1,
         "costUsd": 0,
         "inputTokens": 91295,
         "outputTokens": 2084
@@ -22133,7 +22133,7 @@
           "score": 1,
           "reason": "outcome=supported-answer; answerable=true; abstained=false; fabricated=false; correct=true; brier=0.0000; evidence=true",
           "attempts": 1,
-          "latencyMs": 1,
+          "latencyMs": 0,
           "usage": {
             "inputTokens": 1857,
             "outputTokens": 34,
@@ -29135,8 +29135,8 @@
         "version": "0.2.0"
       },
       "model": "mock:1",
-      "startedAt": "2026-10-29T02:16:25.193Z",
-      "completedAt": "2026-10-29T02:16:25.194Z",
+      "startedAt": "2026-10-29T03:15:15.401Z",
+      "completedAt": "2026-10-29T03:15:15.401Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -35056,8 +35056,8 @@
         "version": "0.2.0"
       },
       "model": "script:recovery:100",
-      "startedAt": "2026-10-29T02:16:25.504Z",
-      "completedAt": "2026-10-29T02:16:25.505Z",
+      "startedAt": "2026-10-29T03:15:15.670Z",
+      "completedAt": "2026-10-29T03:15:15.671Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
@@ -41785,8 +41785,8 @@
         "version": "0.2.0"
       },
       "model": "script:always-abstain:100",
-      "startedAt": "2026-10-29T02:16:25.796Z",
-      "completedAt": "2026-10-29T02:16:25.797Z",
+      "startedAt": "2026-10-29T03:15:15.941Z",
+      "completedAt": "2026-10-29T03:15:15.942Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -47284,8 +47284,8 @@
         "version": "0.2.0"
       },
       "model": "script:no-retry:100",
-      "startedAt": "2026-10-29T02:16:26.100Z",
-      "completedAt": "2026-10-29T02:16:26.100Z",
+      "startedAt": "2026-10-29T03:15:16.209Z",
+      "completedAt": "2026-10-29T03:15:16.210Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -52783,8 +52783,8 @@
         "version": "0.2.0"
       },
       "model": "script:recovery:0",
-      "startedAt": "2026-10-29T02:16:26.404Z",
-      "completedAt": "2026-10-29T02:16:26.405Z",
+      "startedAt": "2026-10-29T03:15:16.478Z",
+      "completedAt": "2026-10-29T03:15:16.478Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
@@ -52795,7 +52795,7 @@
         "tasks": 60,
         "passed": 0,
         "failed": 0,
-        "latencyMs": 1,
+        "latencyMs": 0,
         "costUsd": 0
       },
       "rows": [
@@ -59512,8 +59512,8 @@
         "version": "0.2.0"
       },
       "model": "script:recovery:25",
-      "startedAt": "2026-10-29T02:16:26.687Z",
-      "completedAt": "2026-10-29T02:16:26.688Z",
+      "startedAt": "2026-10-29T03:15:16.744Z",
+      "completedAt": "2026-10-29T03:15:16.744Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
@@ -59524,7 +59524,7 @@
         "tasks": 60,
         "passed": 0,
         "failed": 0,
-        "latencyMs": 1,
+        "latencyMs": 0,
         "costUsd": 0
       },
       "rows": [
@@ -66241,8 +66241,8 @@
         "version": "0.2.0"
       },
       "model": "script:recovery:50",
-      "startedAt": "2026-10-29T02:16:26.964Z",
-      "completedAt": "2026-10-29T02:16:26.965Z",
+      "startedAt": "2026-10-29T03:15:17.008Z",
+      "completedAt": "2026-10-29T03:15:17.008Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
@@ -66253,7 +66253,7 @@
         "tasks": 60,
         "passed": 0,
         "failed": 0,
-        "latencyMs": 1,
+        "latencyMs": 0,
         "costUsd": 0
       },
       "rows": [
@@ -72970,8 +72970,8 @@
         "version": "0.2.0"
       },
       "model": "script:recovery:75",
-      "startedAt": "2026-10-29T02:16:27.257Z",
-      "completedAt": "2026-10-29T02:16:27.257Z",
+      "startedAt": "2026-10-29T03:15:17.275Z",
+      "completedAt": "2026-10-29T03:15:17.276Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
@@ -72982,7 +72982,7 @@
         "tasks": 60,
         "passed": 0,
         "failed": 0,
-        "latencyMs": 1,
+        "latencyMs": 0,
         "costUsd": 0
       },
       "rows": [

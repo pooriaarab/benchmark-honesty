@@ -64,10 +64,10 @@ Brier loss is $(p-y)^2$. For valid non-fabrications, the task score is $\Correct
 Fabrication receives no credit.
 Invalid outputs receive no task credit and maximal Brier loss. They remain in all denominators.
 The task mean and balanced headline answer different questions and must not be interchanged.
-We report component rates with \CILevel{}\% Wilson intervals, using tasks within each stratum as the resampling population.
+We report component rates with \CILevel{}\% Wilson intervals, using tasks within each stratum as the sampling population.
 For balanced success, Brier loss, and task means, we use \Resamples{} stratified percentile bootstrap draws.
 Confidence contrasts use paired task indices. They change confidence on the same observed decisions.
-These intervals are descriptive under hypothetical item resampling. Repeated deterministic runs do not create independent observations.
+These intervals are descriptive under hypothetical item sampling. Repeated deterministic runs do not create independent observations.
 Boundary bootstrap intervals can collapse. Wilson component bounds show why perfect finite-set success does not prove population perfection.
 \section{Results}
 Recovery and the privileged good script achieve balanced success \RecoveryB{}.

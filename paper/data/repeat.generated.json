@@ -11,8 +11,8 @@
         "version": "0.2.0"
       },
       "model": "script:empty:100",
-      "startedAt": "2026-10-29T02:16:23.734Z",
-      "completedAt": "2026-10-29T02:16:23.735Z",
+      "startedAt": "2026-10-29T03:15:14.114Z",
+      "completedAt": "2026-10-29T03:15:14.114Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -2812,8 +2812,8 @@
         "version": "0.2.0"
       },
       "model": "script:constant:100",
-      "startedAt": "2026-10-29T02:16:23.979Z",
-      "completedAt": "2026-10-29T02:16:23.980Z",
+      "startedAt": "2026-10-29T03:15:14.340Z",
+      "completedAt": "2026-10-29T03:15:14.341Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -2824,7 +2824,7 @@
         "tasks": 60,
         "passed": 0,
         "failed": 0,
-        "latencyMs": 1,
+        "latencyMs": 0,
         "costUsd": 0
       },
       "rows": [
@@ -5613,8 +5613,8 @@
         "version": "0.2.0"
       },
       "model": "script:echo:100",
-      "startedAt": "2026-10-29T02:16:24.243Z",
-      "completedAt": "2026-10-29T02:16:24.244Z",
+      "startedAt": "2026-10-29T03:15:14.572Z",
+      "completedAt": "2026-10-29T03:15:14.573Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -8414,8 +8414,8 @@
         "version": "0.2.0"
       },
       "model": "script:refuse:100",
-      "startedAt": "2026-10-29T02:16:24.490Z",
-      "completedAt": "2026-10-29T02:16:24.490Z",
+      "startedAt": "2026-10-29T03:15:14.793Z",
+      "completedAt": "2026-10-29T03:15:14.793Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -8426,7 +8426,7 @@
         "tasks": 60,
         "passed": 0,
         "failed": 0,
-        "latencyMs": 1,
+        "latencyMs": 0,
         "costUsd": 0
       },
       "rows": [
@@ -11215,8 +11215,8 @@
         "version": "0.2.0"
       },
       "model": "script:first-tool:100",
-      "startedAt": "2026-10-29T02:16:24.743Z",
-      "completedAt": "2026-10-29T02:16:24.744Z",
+      "startedAt": "2026-10-29T03:15:15.015Z",
+      "completedAt": "2026-10-29T03:15:15.015Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -21996,8 +21996,8 @@
         "version": "0.2.0"
       },
       "model": "mock:1",
-      "startedAt": "2026-10-29T02:16:25.029Z",
-      "completedAt": "2026-10-29T02:16:25.030Z",
+      "startedAt": "2026-10-29T03:15:15.267Z",
+      "completedAt": "2026-10-29T03:15:15.268Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
@@ -29149,8 +29149,8 @@
         "version": "0.2.0"
       },
       "model": "mock:1",
-      "startedAt": "2026-10-29T02:16:25.339Z",
-      "completedAt": "2026-10-29T02:16:25.340Z",
+      "startedAt": "2026-10-29T03:15:15.536Z",
+      "completedAt": "2026-10-29T03:15:15.536Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -35072,8 +35072,8 @@
         "version": "0.2.0"
       },
       "model": "script:recovery:100",
-      "startedAt": "2026-10-29T02:16:25.653Z",
-      "completedAt": "2026-10-29T02:16:25.653Z",
+      "startedAt": "2026-10-29T03:15:15.806Z",
+      "completedAt": "2026-10-29T03:15:15.807Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
@@ -41803,8 +41803,8 @@
         "version": "0.2.0"
       },
       "model": "script:always-abstain:100",
-      "startedAt": "2026-10-29T02:16:25.948Z",
-      "completedAt": "2026-10-29T02:16:25.949Z",
+      "startedAt": "2026-10-29T03:15:16.075Z",
+      "completedAt": "2026-10-29T03:15:16.076Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -47304,8 +47304,8 @@
         "version": "0.2.0"
       },
       "model": "script:no-retry:100",
-      "startedAt": "2026-10-29T02:16:26.241Z",
-      "completedAt": "2026-10-29T02:16:26.242Z",
+      "startedAt": "2026-10-29T03:15:16.343Z",
+      "completedAt": "2026-10-29T03:15:16.344Z",
       "mean": 0,
       "confidenceInterval95": {
         "low": 0,
@@ -52805,8 +52805,8 @@
         "version": "0.2.0"
       },
       "model": "script:recovery:0",
-      "startedAt": "2026-10-29T02:16:26.547Z",
-      "completedAt": "2026-10-29T02:16:26.548Z",
+      "startedAt": "2026-10-29T03:15:16.611Z",
+      "completedAt": "2026-10-29T03:15:16.612Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
@@ -52817,7 +52817,7 @@
         "tasks": 60,
         "passed": 0,
         "failed": 0,
-        "latencyMs": 1,
+        "latencyMs": 0,
         "costUsd": 0
       },
       "rows": [
@@ -59536,8 +59536,8 @@
         "version": "0.2.0"
       },
       "model": "script:recovery:25",
-      "startedAt": "2026-10-29T02:16:26.824Z",
-      "completedAt": "2026-10-29T02:16:26.824Z",
+      "startedAt": "2026-10-29T03:15:16.875Z",
+      "completedAt": "2026-10-29T03:15:16.876Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
@@ -66267,8 +66267,8 @@
         "version": "0.2.0"
       },
       "model": "script:recovery:50",
-      "startedAt": "2026-10-29T02:16:27.107Z",
-      "completedAt": "2026-10-29T02:16:27.107Z",
+      "startedAt": "2026-10-29T03:15:17.140Z",
+      "completedAt": "2026-10-29T03:15:17.141Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
@@ -72998,8 +72998,8 @@
         "version": "0.2.0"
       },
       "model": "script:recovery:75",
-      "startedAt": "2026-10-29T02:16:27.401Z",
-      "completedAt": "2026-10-29T02:16:27.402Z",
+      "startedAt": "2026-10-29T03:15:17.409Z",
+      "completedAt": "2026-10-29T03:15:17.409Z",
       "mean": 1,
       "confidenceInterval95": {
         "low": 1,
