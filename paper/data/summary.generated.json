@@ -1,0 +1,986 @@
+{
+  "scoreWeights": [
+    0.8,
+    0.2
+  ],
+  "schema_version": 1,
+  "kind": "scripted-controls",
+  "options": {
+    "seed": 1,
+    "concurrency": 1,
+    "retries": 0,
+    "maxTurns": 4,
+    "maxToolCalls": 4,
+    "budgetUsd": 0
+  },
+  "tasks": 60,
+  "strata": [
+    30,
+    30
+  ],
+  "policies": 10,
+  "conditions": 14,
+  "episodes": 1680,
+  "costUsd": 0,
+  "ciLevel": 95,
+  "coverage": [
+    {
+      "attribute": "founding year",
+      "counts": [
+        10,
+        5,
+        5
+      ]
+    },
+    {
+      "attribute": "head curator",
+      "counts": [
+        10,
+        5,
+        5
+      ]
+    },
+    {
+      "attribute": "home city",
+      "counts": [
+        10,
+        5,
+        5
+      ]
+    }
+  ],
+  "stats": [
+    {
+      "policy": "empty",
+      "confidence": 100,
+      "balanced": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 60,
+        "unsupported": 0,
+        "fabrication": 0,
+        "supported-answer": 0,
+        "honest-abstention": 0
+      }
+    },
+    {
+      "policy": "constant",
+      "confidence": 100,
+      "balanced": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 60,
+        "unsupported": 0,
+        "fabrication": 0,
+        "supported-answer": 0,
+        "honest-abstention": 0
+      }
+    },
+    {
+      "policy": "echo",
+      "confidence": 100,
+      "balanced": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 60,
+        "unsupported": 0,
+        "fabrication": 0,
+        "supported-answer": 0,
+        "honest-abstention": 0
+      }
+    },
+    {
+      "policy": "refuse",
+      "confidence": 100,
+      "balanced": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 60,
+        "unsupported": 0,
+        "fabrication": 0,
+        "supported-answer": 0,
+        "honest-abstention": 0
+      }
+    },
+    {
+      "policy": "first-tool",
+      "confidence": 100,
+      "balanced": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 60,
+        "unsupported": 0,
+        "fabrication": 0,
+        "supported-answer": 0,
+        "honest-abstention": 0
+      }
+    },
+    {
+      "policy": "packaged-good",
+      "confidence": 100,
+      "balanced": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 0,
+        "unsupported": 0,
+        "fabrication": 0,
+        "supported-answer": 30,
+        "honest-abstention": 30
+      }
+    },
+    {
+      "policy": "packaged-bad",
+      "confidence": 95,
+      "balanced": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 0.9025000000000014,
+        "low": 0.9025000000000014,
+        "high": 0.9025000000000014,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0.009750000000000003,
+        "low": 0.009750000000000003,
+        "high": 0.009750000000000003,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 0,
+        "unsupported": 30,
+        "fabrication": 30,
+        "supported-answer": 0,
+        "honest-abstention": 0
+      }
+    },
+    {
+      "policy": "recovery",
+      "confidence": 100,
+      "balanced": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 0,
+        "unsupported": 0,
+        "fabrication": 0,
+        "supported-answer": 30,
+        "honest-abstention": 30
+      }
+    },
+    {
+      "policy": "always-abstain",
+      "confidence": 100,
+      "balanced": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "brier": {
+        "value": 0.5,
+        "low": 0.5,
+        "high": 0.5,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0.5,
+        "low": 0.5,
+        "high": 0.5,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 0,
+        "unsupported": 30,
+        "fabrication": 0,
+        "supported-answer": 0,
+        "honest-abstention": 30
+      }
+    },
+    {
+      "policy": "no-retry",
+      "confidence": 100,
+      "balanced": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "brier": {
+        "value": 0.5,
+        "low": 0.5,
+        "high": 0.5,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0.5,
+        "low": 0.5,
+        "high": 0.5,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 0,
+        "unsupported": 30,
+        "fabrication": 0,
+        "supported-answer": 0,
+        "honest-abstention": 30
+      }
+    },
+    {
+      "policy": "recovery",
+      "confidence": 0,
+      "balanced": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0.7999999999999993,
+        "low": 0.7999999999999993,
+        "high": 0.7999999999999993,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 0,
+        "unsupported": 0,
+        "fabrication": 0,
+        "supported-answer": 30,
+        "honest-abstention": 30
+      }
+    },
+    {
+      "policy": "recovery",
+      "confidence": 25,
+      "balanced": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 0.5625,
+        "low": 0.5625,
+        "high": 0.5625,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0.8875000000000008,
+        "low": 0.8875000000000008,
+        "high": 0.8875000000000008,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 0,
+        "unsupported": 0,
+        "fabrication": 0,
+        "supported-answer": 30,
+        "honest-abstention": 30
+      }
+    },
+    {
+      "policy": "recovery",
+      "confidence": 50,
+      "balanced": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 0.25,
+        "low": 0.25,
+        "high": 0.25,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0.950000000000001,
+        "low": 0.950000000000001,
+        "high": 0.950000000000001,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 0,
+        "unsupported": 0,
+        "fabrication": 0,
+        "supported-answer": 30,
+        "honest-abstention": 30
+      }
+    },
+    {
+      "policy": "recovery",
+      "confidence": 75,
+      "balanced": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "answerable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "unavailable": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "fabrication": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "overAbstention": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "brier": {
+        "value": 0.0625,
+        "low": 0.0625,
+        "high": 0.0625,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "taskMean": {
+        "value": 0.9874999999999989,
+        "low": 0.9874999999999989,
+        "high": 0.9874999999999989,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "outcomes": {
+        "invalid": 0,
+        "unsupported": 0,
+        "fabrication": 0,
+        "supported-answer": 30,
+        "honest-abstention": 30
+      }
+    }
+  ],
+  "contrasts": [
+    {
+      "confidence": 100,
+      "brierDifference": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "correctDifference": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      }
+    },
+    {
+      "confidence": 0,
+      "brierDifference": {
+        "value": 1,
+        "low": 1,
+        "high": 1,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "correctDifference": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      }
+    },
+    {
+      "confidence": 25,
+      "brierDifference": {
+        "value": 0.5625,
+        "low": 0.5625,
+        "high": 0.5625,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "correctDifference": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      }
+    },
+    {
+      "confidence": 50,
+      "brierDifference": {
+        "value": 0.25,
+        "low": 0.25,
+        "high": 0.25,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "correctDifference": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      }
+    },
+    {
+      "confidence": 75,
+      "brierDifference": {
+        "value": 0.0625,
+        "low": 0.0625,
+        "high": 0.0625,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "correctDifference": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      }
+    }
+  ],
+  "repeatIdentical": true,
+  "freeModels": {
+    "status": "not-run",
+    "reason": "No free-only proxy URL or OpenRouter credential configured at registration; availability elsewhere is unknown."
+  }
+}

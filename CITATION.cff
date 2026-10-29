@@ -5,6 +5,7 @@ type: software
 authors:
   - family-names: Arab
     given-names: Pooria
+    orcid: https://orcid.org/0009-0005-9964-6841
 version: "0.2.0"
 date-released: 2026-10-16
 license: MIT
@@ -17,3 +18,12 @@ keywords:
   - llm-evaluation
   - agent-evaluation
   - deterministic-grader
+preferred-citation:
+  type: report
+  title: "Benchmark Honesty: Recovery and Abstention after Tool Failure"
+  authors:
+    - family-names: Arab
+      given-names: Pooria
+      orcid: https://orcid.org/0009-0005-9964-6841
+  url: https://github.com/pooriaarab/benchmark-honesty
+  license: CC-BY-4.0

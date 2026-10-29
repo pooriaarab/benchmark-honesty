@@ -1,0 +1,9 @@
+\begin{figure}[ht]\centering
+\begin{tikzpicture}\begin{axis}[ybar,ymin=0,ymax=12,nodes near coords,bar width=12pt,ylabel={Episodes},xtick={0,1,2},xticklabels={Founding year,Head curator,Home city},legend style={at={(.5,1.25)},anchor=south,legend columns=3}]
+\addplot[fill=okblue] table[x=attribute,y=recoverable,col sep=comma]{data/coverage.generated.csv};
+\addplot[fill=okorange,pattern=north east lines] table[x=attribute,y=missing,col sep=comma]{data/coverage.generated.csv};
+\addplot[fill=white,pattern=dots] table[x=attribute,y=withheld,col sep=comma]{data/coverage.generated.csv};
+\legend{Recoverable,Missing,Withheld}
+\end{axis}\end{tikzpicture}
+\caption{Each attribute has the same availability counts. The \TaskCount{} episodes form a fixed design; counts are not estimated rates.}
+\end{figure}

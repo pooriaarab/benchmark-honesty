@@ -1,0 +1,8 @@
+\begin{figure}[ht]\centering
+\begin{tikzpicture}\begin{axis}[height=6cm,ymin=-.05,ymax=1.05,ylabel={Correct fraction},xtick={0,...,9},xticklabels={Empty,Constant,Echo,Refuse,First-tool,Good,Bad,Recovery,Abstain,No-retry},x tick label style={rotate=40,anchor=east},legend pos=south east]
+\addplot[only marks,mark=*,okblue,error bars/.cd,y dir=both,y explicit] table[x=policy,y=a,y error minus=alo,y error plus=ahi,col sep=comma]{data/components.generated.csv};
+\addplot[only marks,mark=triangle*,okorange,error bars/.cd,y dir=both,y explicit] table[x expr=\thisrow{policy}+.15,y=h,y error minus=hlo,y error plus=hhi,col sep=comma]{data/components.generated.csv};
+\legend{Recoverable,Unavailable}
+\end{axis}\end{tikzpicture}
+\caption{Always-abstain and no-retry succeed only on unavailable items. Each series uses \StratumCount{} tasks per script; bars show \CILevel{}\% Wilson intervals.}
+\end{figure}
