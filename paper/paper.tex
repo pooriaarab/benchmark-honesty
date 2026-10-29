@@ -1,0 +1,113 @@
+\documentclass{article}
+\input{template/layout}
+\input{generated/macros}
+\title{\PaperTitle}
+\author{Pooria Arab\\Independent researcher\\\expandafter\url\expandafter{\AuthorOrcid}}
+\begin{document}
+\maketitle
+\raggedbottom
+\begin{abstract}
+\PaperAbstract
+\end{abstract}
+\section{Why this matters}
+A failed lookup does not always mean that an answer is unknowable. A temporary failure calls for another attempt.
+Missing evidence calls for restraint. An assistant that always stops loses useful answers; one that always answers can invent facts.
+Benchmark Honesty measures this distinction in fictional records with controlled evidence availability.
+Here, honesty means answering from retrieved evidence and abstaining when that evidence remains unavailable.
+It does not mean detecting intent to deceive, assessing beliefs, or measuring truthfulness across open-ended conversation.
+The contribution is a controlled test of recovery and abstention, together with evidence about selected scoring distinctions.
+\section{Related work}
+TruthfulQA tests answers to questions designed around human misconceptions~\cite{truthfulqa}.
+Its focus differs from a controlled transition between a failed lookup and an available or unavailable record.
+The $\tau$-bench environment tests tool-agent-user interaction against domain rules and final states~\cite{tau}.
+This benchmark isolates a smaller decision: whether the observed lookup supports an answer.
+PayBench motivates measuring appropriate action alongside appropriate restraint through matched safe and unsafe cases~\cite{paybench}.
+Honesty uses balanced availability conditions, not matched counterfactual pairs.
+The Agentic Benchmark Checklist motivates oracle and trivial-policy controls~\cite{abc}.
+These controls expose scoring behavior, but they do not establish that learned models behave well.
+\section{Experiment design}
+The public set contains \TaskCount{} episodes, split into \StratumCount{} recoverable and \StratumCount{} unavailable lookups.
+Each prompt requests an attribute of a fictional entity and explains the retry and abstention rules.
+A matching lookup in a recoverable episode returns a transient error first, then the requested fact on retry.
+An unavailable episode returns either a missing-record error or a withheld attribute.
+The final response contains an answer and confidence that the submitted answer, including abstention, is correct.
+The scorer replays tool calls. It requires successful retrieval for an answer and observed unavailability for abstention.
+The strata have equal attribute counts, but distinct entities. Their difference therefore does not identify a paired causal effect.
+The public ordering alternates availability. This structure permits shortcuts and limits use as a held-out model test.
+
+\paragraph{Controls.}
+We run \PolicyCount{} scripts: empty, constant, echo, prose refusal, first-tool, packaged-good, packaged-bad, recovery, always-abstain, and no-retry.
+The packaged scripts can read task metadata; the good script is a privileged ceiling, not a model baseline.
+Recovery reads only the prompt and tool responses. It retries transient errors, returns retrieved values, and otherwise submits null.
+Always-abstain makes a valid lookup before submitting null. No-retry stops after a transient error.
+First-tool submits empty arguments until the turn limit. Empty, constant, echo, and prose refusal test invalid response handling.
+The confidence sweep changes only recovery's declared probability.
+The Git study plan precedes data collection; it has no independent registration timestamp.
+\section{Coverage}
+Coverage reflects the generator's fixed design, not the prevalence of failures in deployed services.
+Fictional entities avoid requiring current world knowledge. They do not establish resistance to memorization.
+\input{figures/coverage}
+\section{Taxonomy}
+\begin{description}
+\item[Invalid response.] The final answer lacks the required structured fields or valid confidence.
+\item[Unsupported response.] A valid answer lacks replayed evidence, gives the wrong fact, or abstains on a recoverable item.
+\item[Fabrication.] A non-abstention answer appears on an unavailable item, regardless of its stated confidence.
+\item[Supported answer.] The answer matches the retrieved fact after normalization.
+\item[Honest abstention.] An accepted abstention follows evidence of unavailability.
+\end{description}
+These are grader categories. They are not a validated taxonomy of human judgments about honesty.
+\section{Metrics and scoring}
+Let $A$ be correctness on recoverable items and $H$ be evidence-backed abstention on unavailable items.
+The headline $B=\sqrt{AH}$ penalizes a policy that succeeds on only one stratum.
+Let $y$ indicate evidence-backed correctness and $p$ be declared confidence as a probability.
+Brier loss is $(p-y)^2$. For valid non-fabrications, the task score is $\CorrectWeight y+\CalibrationWeight[1-(p-y)^2]$.
+Fabrication receives no credit.
+Invalid outputs receive no task credit and maximal Brier loss. They remain in all denominators.
+The task mean and balanced headline answer different questions and must not be interchanged.
+We report component rates with \CILevel{}\% Wilson intervals, using tasks within each stratum as the resampling population.
+For balanced success, Brier loss, and task means, we use \Resamples{} stratified percentile bootstrap draws.
+Confidence contrasts use paired task indices. They change confidence on the same observed decisions.
+These intervals are descriptive under hypothetical item resampling. Repeated deterministic runs do not create independent observations.
+Boundary bootstrap intervals can collapse. Wilson component bounds show why perfect finite-set success does not prove population perfection.
+\section{Results}
+Recovery and the privileged good script achieve balanced success \RecoveryB{}.
+Recovery's component correctness is \RecoveryA{} in each stratum.
+Always-abstain obtains unavailable correctness \RefusalH{}, but recoverable correctness \RefusalA{}.
+All other controls have balanced success \ZeroB{}. This supports the planned control separation on the public set.
+\begin{table}[ht]\centering\small
+\input{generated/results}
+\caption{Scripted control results. Each component uses \StratumCount{} items; brackets give \CILevel{}\% intervals as defined in the text.}
+\end{table}
+\input{figures/components}
+The packaged bad script has fabrication rate \BadF{} on unavailable items.
+Its raw task mean is \BadMean{}, from calibration credit on unsuccessful recoverable items.
+Its balanced headline remains \ZeroB{}; that residual credit does not imply correct recovery.
+Changing recovery confidence from certainty to its minimum increases Brier loss by \ConfidenceEffect{}.
+The paired correctness difference is \ConfidenceNull{}: a null effect, as planned.
+\input{figures/confidence}
+All \ConditionCount{} conditions produce identical semantic traces on repetition, across \EpisodeCount{} executed episodes.
+Repetition checks determinism; it does not strengthen population inference.
+\section{Roadmap}
+Next studies should use fresh hidden items and learned models under a fixed free-access protocol.
+They should add counterfactual entity pairs, vary retry costs, and test less explicit prompts.
+Human ratings should test whether the accepted abstention language matches ordinary judgments.
+Failures should remain visible in versioned reports when the grader changes.
+\section{Caveats}
+No learned model or human participant is evaluated. The session has no configured free-model route; availability elsewhere is unknown.
+There is no model leaderboard, provider comparison, or evidence of deployment safety.
+The environments are synthetic. The scripts are deterministic controls, not a simulated population of agents.
+The prompt states the desired behavior, and all tasks are public. Memorization can defeat the intended measurement.
+The grader reads the structured answer field only. Claims in surrounding prose can escape evaluation.
+Its fixed refusal vocabulary can reject reasonable natural-language abstention. No human agreement study validates these choices.
+Confidence measures whether an answer or abstention is correct. It does not estimate whether a missing fact exists.
+Only one public task set is studied. Shared templates weaken an independent-item interpretation of the reported intervals.
+The observations establish control behavior through the execution path, not full construct validity or exhaustive grader soundness.
+\section{Citation}
+Arab, Pooria. \emph{\PaperTitle}. Research preprint. No venue publication is claimed.
+\paragraph{Availability.} \href{https://github.com/pooriaarab/benchmark-honesty}{Code and generated study data}. Paper: CC-BY-4.0; benchmark code and tasks: MIT.
+\section{Authors}
+Pooria Arab, independent researcher. ORCID: \expandafter\url\expandafter{\AuthorOrcid}.
+AI assistance supported implementation, analysis scripts, and drafting. The author remains responsible for scientific claims and release decisions.
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

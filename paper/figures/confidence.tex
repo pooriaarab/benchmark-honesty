@@ -1,0 +1,9 @@
+\begin{figure}[ht]\centering
+\begin{tikzpicture}\begin{axis}[xlabel={Declared confidence (percent)},ylabel={Score or loss},ymin=-.05,ymax=1.05,xmin=0,xmax=100,xtick=data,legend style={at={(.5,1.05)},anchor=south,legend columns=3}]
+\addplot[okblue,mark=*] table[x=confidence,y=balanced,col sep=comma]{data/confidence.generated.csv};
+\addplot[okorange,mark=triangle*,error bars/.cd,y dir=both,y explicit] table[x=confidence,y=brier,y error minus=blo,y error plus=bhi,col sep=comma]{data/confidence.generated.csv};
+\addplot[black,dashed,mark=square*] table[x=confidence,y=taskMean,col sep=comma]{data/confidence.generated.csv};
+\legend{Balanced,Brier loss,Task mean}
+\end{axis}\end{tikzpicture}
+\caption{Confidence changes calibration but leaves balanced success fixed. Each point uses the same \TaskCount{} correct decisions; \CILevel{}\% bootstrap intervals collapse to the points.}
+\end{figure}

@@ -1,0 +1,14 @@
+{
+  "title": "Benchmark Honesty: Recovery and Abstention after Tool Failure",
+  "orcid": "https://orcid.org/0009-0005-9964-6841",
+  "keywords": [
+    "tool failure",
+    "abstention",
+    "honesty",
+    "benchmark",
+    "calibration"
+  ],
+  "code_url": "https://github.com/pooriaarab/benchmark-honesty",
+  "artifact_name": "honesty-paper.pdf",
+  "source_commit": "e04c36fa92b5e5bb5ca845100d7fdb87ce00415a"
+}

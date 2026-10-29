@@ -6,3 +6,15 @@ artifacts/
 # hidden evaluation splits (never commit)
 data/tasks.hidden.jsonl
 hidden/
+
+# Paper build outputs; keep figures as source, not proof media.
+paper/*.pdf
+paper/*.log
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.out
+paper/*.xdv
+paper/neurips_2026.sty
+paper/.style.zip
+__pycache__/
